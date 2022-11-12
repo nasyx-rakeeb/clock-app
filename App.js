@@ -1,24 +1,35 @@
 import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Pressable } from 'react-native'
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Home from "./screens/Home.js"
 import Matches from "./screens/Matches.js"
 import News from "./screens/News.js"
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import {colors} from "./constants/colors.js"
+import { useFonts } from 'expo-font'
 
 const Tab = createBottomTabNavigator()
 const navTheme = DefaultTheme
-navTheme.colors.background = "#fff"
+navTheme.colors.background = colors.main
 
 const App = () => {
+  const [fontsLoaded] = useFonts({
+    'marsdSenemiBold': require('./assets/fonts/Marsden-Ct-Bold.ttf')
+  })
+  if (!fontsLoaded) {
+    return null
+  }
+
   return (
     <NavigationContainer theme={navTheme}>
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
       <Tab.Navigator screenOptions={({ route }) => ({
-          headerTitleAlign: "center",
-          headerStyle: {backgroundColor: "#fff", elevation: 0},
-          tabBarStyle: { height: 60, paddingTop: 10, paddingBottom: 10 },
+          headerTintColor: "#fff",
+          headerRight: (color, size) => <Pressable onPress={() => console.log(5)} style={{marginRight: 15}}><Ionicons color="#fff" size={22} name="search" /></Pressable>,
+          headerStyle: {backgroundColor: colors.main, elevation: 0},
+          headerContainerStyle: {alignItems: 'center', flex: 1},
+          tabBarStyle: { height: 60, paddingTop: 10, paddingBottom: 10, backgroundColor: "#363636", borderTopWidth: 0 },
           tabBarIcon: ({ focused, color, size }) => {
             let iconName
             if (route.name === 'Home') {
@@ -30,7 +41,7 @@ const App = () => {
             }
             return <Ionicons name={iconName} size={size} color={color} />
           },
-          tabBarActiveTintColor: 'tomato',
+          tabBarActiveTintColor: colors.orange,
           tabBarInactiveTintColor: 'gray',
         })}>
         <Tab.Screen name="Home" component={Home} />
