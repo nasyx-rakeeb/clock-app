@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
     position: "absolute",
-    left: "13%",
+    left: "13.5%",
     fontFamily: "marsdSenemiBold",
   }
 })
