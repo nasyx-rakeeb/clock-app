@@ -1,6 +1,6 @@
 import {View, Text, StyleSheet} from "react-native"
 
-const = () => {
+const News = () => {
   return (
     <View style={styles.container}>
     
@@ -14,4 +14,4 @@ const styles = StyleSheet.create({
   }
 })
 
-expo default 
+export default News

@@ -13,7 +13,7 @@ navTheme.colors.background = "#fff"
 
 const App = () => {
   return (
-    <NavigationContainer theme={MyTheme}>
+    <NavigationContainer theme={navTheme}>
       <StatusBar style="auto" />
       <Tab.Navigator screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
