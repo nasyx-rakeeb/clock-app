@@ -16,14 +16,17 @@ const App = () => {
     <NavigationContainer theme={navTheme}>
       <StatusBar style="auto" />
       <Tab.Navigator screenOptions={({ route }) => ({
+          headerTitleAlign: "center",
+          headerStyle: {backgroundColor: "#fff", elevation: 0},
+          tabBarStyle: { height: 60, paddingTop: 10, paddingBottom: 10 },
           tabBarIcon: ({ focused, color, size }) => {
             let iconName
             if (route.name === 'Home') {
-              iconName = focused ? 'ios-information-circle' : 'ios-information-circle-outline'
+              iconName = focused ? 'md-home' : 'md-home-outline'
             } else if (route.name === 'Matches') {
-              iconName = focused ? 'ios-list' : 'ios-list-outline'
+              iconName = focused ? 'md-football' : 'md-football-outline'
             } else if (route.name === "News") {
-              iconName = focused ? "ios-information-circle" : "ios-list-outline"
+              iconName = focused ? "md-newspaper" : "md-newspaper-outline"
             }
             return <Ionicons name={iconName} size={size} color={color} />
           },
