@@ -6,13 +6,19 @@ import * as Location from 'expo-location'
 import Loading from "../components/loading.js"
 import {getTime} from "../utils/DateTime.js"
 import { FontAwesome5 } from '@expo/vector-icons'
+import moment from "moment"
 
 const Weather = () => {
   const [data, setData] = useState(null)
   const [img, setImg] = useState()
   const [airQuality, setAurQuality] = useState(null)
   let [airQualityTxt, setAurQualityTxt] = useState(null)
-  const [hours, minutes, ampm, weekday] = getTime(new Date)
+  const [,,,weekday] = getTime(new Date)
+  const [liveTime, setLiveTime] = useState(new Date())
+  
+  const refreshLiveTime = () => {
+    setLiveTime(new Date())
+  }
   
   useEffect(() => {
     (async () => {
@@ -49,6 +55,10 @@ const Weather = () => {
       else {
         setImg(require("../assets/weather/weather.png"))
       }
+      const timerId = setInterval(refreshLiveTime, 1000)
+      return function cleanup() {
+        clearInterval(timerId)
+     }
     })()
   }, [])
   
@@ -71,7 +81,7 @@ const Weather = () => {
       <View style={styles.info1}>
         <Text style={styles.degree}>{`${data?.main?.feels_like}°`} 
           <View>
-            <Text style={styles.dateTime}>{`${hours}:${minutes}`}</Text>
+            <Text style={styles.dateTime}>{moment(liveTime, "HH:mm:ss").format("hh:mm")}</Text>
             <Text style={styles.weekday}>{weekday}</Text>
           </View>
         </Text>

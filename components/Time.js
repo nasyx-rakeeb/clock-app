@@ -6,7 +6,7 @@ import Loading from "../components/loading.js"
 import {getTimezone} from "../services/getTimezone.js"
 import moment from "moment"
 
-const [hours, minutes, ampm, weekday] = getTime(new Date)
+const [,,ampm, weekday] = getTime(new Date)
 
 const Time = () => {
   const [timezone, setTimezone] = useState(null)
@@ -34,7 +34,7 @@ const Time = () => {
         <Text style={styles.weekday}>{weekday}</Text>
         {timezone && <Text style={styles.timezone}>{timezone}</Text>}
       </View>
-      <Text style={styles.time}>{moment(liveTime, "HH:mm:ss").format("hh:mm:ss")}</Text>
+      <Text style={styles.time}>{moment(liveTime, "HH:mm:ss").format("hh:mm:ss")} <Text style={styles.ampm}>{ampm}</Text></Text>
     </View>
     )
 }
@@ -46,16 +46,14 @@ const styles = StyleSheet.create({
   },
   time: {
     color: colors.orange,
-    fontSize: 100,
+    fontSize: 85,
     textAlign: "center",
     fontFamily: "marsdenBold",
-    letterSpacing: 1.5
-    //lineHeight: 150
+    letterSpacing: 1
   },
   ampm: {
     color: colors.orange,
-    fontSize: 35,
-    fontWeight: "bold",
+    fontSize: 22,
     fontFamily: "marsdenBold"
   },
   weekday: {
@@ -63,7 +61,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
     fontFamily: "marsdenBold",
-  //  textDecorationLine: "underline",
     letterSpacing: 1.5,
   },
   top: {
