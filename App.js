@@ -15,7 +15,7 @@ navTheme.colors.background = colors.main
 
 const App = () => {
   const [fontsLoaded] = useFonts({
-    'marsdSenemiBold': require('./assets/fonts/Marsden-Ct-Bold.ttf')
+    'marsdenBold': require('./assets/fonts/Marsden-Ct-Bold.ttf')
   })
   if (!fontsLoaded) {
     return null
@@ -26,7 +26,7 @@ const App = () => {
       <StatusBar style="light" />
       <Tab.Navigator screenOptions={({ route }) => ({
           headerTintColor: "#fff",
-          headerRight: (color, size) => <Pressable onPress={() => console.log(5)} style={{marginRight: 15}}><Ionicons color="#fff" size={22} name="search" /></Pressable>,
+          headerTitleAlign: "center",
           headerStyle: {backgroundColor: colors.main, elevation: 0},
           headerContainerStyle: {alignItems: 'center', flex: 1},
           tabBarStyle: { height: 60, paddingTop: 10, paddingBottom: 10, backgroundColor: "#363636", borderTopWidth: 0 },

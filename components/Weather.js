@@ -1,24 +1,30 @@
-import {View, StyleSheet, Text, Image} from "react-native"
+import {View, StyleSheet, Text, Image, Alert} from "react-native"
 import {colors} from "../constants/colors.js"
 import {useEffect, useState} from "react"
-import {getWeatherData} from "../services/getWeatherData.js"
+import {getWeatherData, getAirQuality} from "../services/getWeatherData.js"
 import * as Location from 'expo-location'
 import Loading from "../components/loading.js"
+import {getTime} from "../utils/DateTime.js"
+import { FontAwesome5 } from '@expo/vector-icons'
 
 const Weather = () => {
   const [data, setData] = useState(null)
   const [img, setImg] = useState()
+  const [airQuality, setAurQuality] = useState(null)
+  let [airQualityTxt, setAurQualityTxt] = useState(null)
+  const [hours, minutes, ampm, weekday] = getTime(new Date)
   
   useEffect(() => {
     (async () => {
       let {status} = await Location.requestForegroundPermissionsAsync()
       if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied')
         return
       }
       let location = await Location.getCurrentPositionAsync({})
-      const res = await getWeatherData(7.8731, 80.7718)
+      const res = await getWeatherData(location.coords.latitude, location.coords.longitude)
+      const res2 = await getAirQuality(location.coords.latitude, location.coords.longitude)
       setData(res)
+      setAurQuality(res2.list[0].main.aqi)
       if (data?.weather[0]?.description === "clear sky") {
         setImg(require("../assets/weather/clearSky.png"))
       } else if (res?.weather[0]?.description === "few clouds") {
@@ -45,13 +51,43 @@ const Weather = () => {
       }
     })()
   }, [])
+  
   if (data === null && img === undefined) {
     return <Loading title="Fetching weather data..." />
   }
   
   return (
     <View style={styles.container}>
-      <Image resizeMode="cover" source={img} style={styles.img} />
+      <View style={styles.imgContainer}>
+        <View style={styles.locationContainer}>
+          <Text style={styles.locationIcon}>
+            <FontAwesome5 name="location-arrow" size={16} color={colors.cloud} />
+          </Text>
+          <Text style={styles.location}>{`${data.name} - ${data.sys.country}`}</Text>
+        </View>
+        <Image resizeMode="cover" source={img} style={styles.img} />
+        <Text style={styles.main}>{data.weather[0].main}</Text>
+      </View>
+      <View style={styles.info1}>
+        <Text style={styles.degree}>{`${data?.main?.feels_like}°`} 
+          <View>
+            <Text style={styles.dateTime}>{`${hours}:${minutes}`}</Text>
+            <Text style={styles.weekday}>{weekday}</Text>
+          </View>
+        </Text>
+      </View>
+      <View style={styles.info2}>
+        <View style={styles.humidityContainer}>
+          <Image resizeMode="cover" style={styles.humidityIcon} source={require("../assets/weather/humidity.png")} />
+          <Text style={styles.humidityTxt}>{data.main.humidity}%</Text>
+          <Text style={styles.humidityTxt2}>HUMIDITY</Text>
+        </View>
+        <View style={styles.windContainer}>
+           <Image resizeMode="cover" style={styles.windIcon} source={require("../assets/weather/airQuality.png")} />
+           <Text style={styles.windTxt}>{airQuality} - {airQuality === 1 ? "GOOD" : airQuality === 2 ? "FAIR" : airQuality === 3 ? "MODERATE" : airQuality === 4 ? "POOR" : airQuality === 5 ? "VERY POOR" : "n/a"}</Text>
+           <Text style={styles.windTxt2}>AIR QUALITY</Text>
+        </View>
+      </View>
     </View>
     )
 }
@@ -59,12 +95,107 @@ const Weather = () => {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    flex: 1
+    flex: 1,
+    paddingHorizontal: 15,
+    paddingBottom: 20,
+    paddingTop: 5
   },
   img: {
-    width: 50,
-    height: 50,
+    width: 70,
+    height: 70,
     aspectRatio: 1
+  },
+  imgContainer: {
+    alignItems: "center",
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-evenly"
+  },
+  degree: {
+    color: colors.skyblue,
+    fontFamily: "marsdenBold",
+    textAlign: "center",
+    fontSize: 100,
+  },
+  info1: {
+    alignItems: "center",
+    width: "100%",
+    justifyContent: "center",
+    marginVertical: 6
+  },
+  dateTime: {
+    color: colors.skyblue,
+    fontSize: 17,
+    fontFamily: "marsdenBold",
+    letterSpacing: 1.5
+  },
+  weekday: {
+    color: colors.skyblue,
+    fontSize: 17,
+    letterSpacing: 1.5,
+    fontFamily: "marsdenBold"
+  },
+  info2: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly"
+  },
+  humidityContainer: {
+    alignItems: "center"
+  },
+  windContainer: {
+    alignItems: "center"
+  },
+  humidityIcon: {
+    width: 300,
+    height: 30,
+    aspectRatio: 1,
+    marginBottom: 5
+  },
+  humidityTxt: {
+    color: colors.skyblue,
+    fontFamily: "marsdenBold",
+    fontSize: 27,
+  },
+  windIcon: {
+    width: 30,
+    height: 30,
+    aspectRatio: 1,
+    marginBottom: 5
+  },
+  windTxt: {
+    color: colors.skyblue,
+    fontFamily: "marsdenBold",
+    fontSize: 27,
+  },
+  humidityTxt2: {
+    color: colors.skyblue,
+    fontFamily: "marsdenBold",
+    letterSpacing: 1
+  },
+  windTxt2: {
+    color: colors.skyblue,
+    fontFamily: "marsdenBold",
+    letterSpacing: 1
+  },
+  location: {
+    color: colors.cloud,
+    fontFamily: "marsdenBold",
+    letterSpacing: 1,
+    fontSize: 16,
+  },
+  main: {
+    color: colors.cloud,
+    fontFamily: "marsdenBold",
+    letterSpacing: 1,
+    fontSize: 16
+  },
+  locationIcon: {
+    marginRight: 10
+  },
+  locationContainer: {
+    flexDirection: "row",
   }
 })
 

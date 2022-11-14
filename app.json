@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "clock-app",
+    "name": "Smart Clock",
     "slug": "clock-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -21,6 +21,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.nasyx.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
@@ -28,6 +29,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "c9c3e0c6-e3ee-4457-b69c-ac14edf7fb08"
+      }
     }
   }
 }
