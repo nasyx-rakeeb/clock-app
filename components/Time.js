@@ -4,6 +4,7 @@ import {colors} from "../constants/colors.js"
 import {useState, useEffect} from "react"
 import Loading from "../components/loading.js"
 import {getTimezone} from "../services/getTimezone.js"
+import moment from "moment"
 
 const [hours, minutes, ampm, weekday] = getTime(new Date)
 
@@ -33,8 +34,7 @@ const Time = () => {
         <Text style={styles.weekday}>{weekday}</Text>
         {timezone && <Text style={styles.timezone}>{timezone}</Text>}
       </View>
-      <Text style={styles.time}>{liveTime.toLocaleTimeString('en-US',{hour12: true})}</Text>
-      {/*<Text style={styles.time}>{`${hours}:${minutes}`}<Text style={styles.ampm}>{ampm}</Text></Text>*/}
+      <Text style={styles.time}>{moment(liveTime, "HH:mm:ss").format("hh:mm:ss")}</Text>
     </View>
     )
 }
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   },
   time: {
     color: colors.orange,
-    fontSize: 110,
+    fontSize: 100,
     textAlign: "center",
     fontFamily: "marsdenBold",
     letterSpacing: 1.5
