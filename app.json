@@ -9,7 +9,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#2A2A2A"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -21,9 +21,9 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.nasyx.app",
+      "package": "com.nasyxrakeeb.smartClock",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#FFFFFF"
       }
     },
