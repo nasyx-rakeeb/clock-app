@@ -17,3 +17,21 @@ export async function getMatches() {
     return error
   }
 }
+
+export async function getMatches2() {
+  const URL = "https://api-football-v1.p.rapidapi.com/v3/fixtures"
+  try {
+    const res = await fetch(URL, {
+      method: "GET",
+      headers: {
+        Accept: "application/json, text/plain, /",
+        'X-RapidAPI-Key': '152152b7bf0759c3161a511bb069c95a',
+        'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com'
+      }
+    })
+    const data = await res.data.json();
+    return data
+  } catch (error) {
+    return error
+  }
+}

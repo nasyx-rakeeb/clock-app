@@ -3,8 +3,19 @@ import Time from "../components/Time.js"
 import Weather from "../components/Weather.js"
 import Calendar from "../components/Calendar.js"
 import {colors} from "../constants/colors.js"
+import {useEffect, useState} from "react"
+import {getMatches2} from "../services/getMatches.js"
 
 const Home = () => {
+  
+  useEffect(() => {
+    const getData = async () => {
+      const res = await getMatches2()
+      console.log(res)
+    }
+    getData()
+  }, [])
+  
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
     <View style={styles.top}>
