@@ -34,7 +34,13 @@ const Time = () => {
         <Text style={styles.weekday}>{weekday}</Text>
         {timezone && <Text style={styles.timezone}>{timezone}</Text>}
       </View>
-      <Text style={styles.time}>{moment(liveTime, "HH:mm:ss").format("hh:mm:ss")} <Text style={styles.ampm}>{ampm}</Text></Text>
+      <View style={styles.timeContainer}>
+        <Text style={styles.time}>{moment(liveTime, "HH:mm:ss").format("hh:mm")}</Text>
+        <View style={styles.innerContainer}>
+          <Text style={styles.ampm}>{ampm}</Text>
+          <Text style={styles.sec}>{moment(liveTime, "HH:mm:ss").format("ss")}</Text>
+        </View>
+      </View>
     </View>
     )
 }
@@ -46,15 +52,15 @@ const styles = StyleSheet.create({
   },
   time: {
     color: colors.orange,
-    fontSize: 85,
+    fontSize: 120,
     textAlign: "center",
     fontFamily: "marsdenBold",
-    letterSpacing: 1
+    letterSpacing: 8
   },
   ampm: {
     color: colors.orange,
-    fontSize: 22,
-    fontFamily: "marsdenBold"
+    fontSize: 30,
+    fontFamily: "marsdenBold",
   },
   weekday: {
     color: colors.orange,
@@ -72,6 +78,21 @@ const styles = StyleSheet.create({
     color: colors.orange,
     fontSize: 15,
     letterSpacing: .5
+  },
+  timeContainer: {
+    flexDirection: "row",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+  },
+  innerContainer: {
+    flexDirection: "column-reverse",
+  },
+  sec: {
+    fontSize: 33,
+    color: colors.orange,
+    fontFamily: "marsdenBold",
+    letterSpacing: 1
   }
 })
 
