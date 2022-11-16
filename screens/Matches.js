@@ -2,8 +2,13 @@ import {View, Text, StyleSheet, Pressable, FlatList, Image} from "react-native"
 import {colors} from "../constants/colors.js"
 import {getMatches} from "../services/getMatches.js"
 import Loading from "../components/loading.js"
-import {useEffect, useState} from "react"
+import {useEffect, useState, useRef} from "react"
 import {timeConvert} from "../utils/DateTime.js"
+import Toast from 'react-native-root-toast'
+import { Ionicons } from '@expo/vector-icons';
+import * as Notifications from "expo-notifications"
+import dayjs from "dayjs"
+import moment from "moment"
 
 const Matches = ({navigation}) => {
   const [data, setData] = useState(null)
@@ -20,6 +25,25 @@ const Matches = ({navigation}) => {
     return <Loading title="Fetching matches please wait..." />
   }
   
+  const triggerNotification = async (date, title, body) => {
+    const matchDateTime = dayjs(moment(date).format("YYYY/MM/DD HH"))
+    const todayDateTime = dayjs(moment(new Date()).format("YYYY/MM/DD HH"))
+    const matchTime = matchDateTime.diff(todayDateTime) / 1000
+    Toast.show('You will be notified before 10 minutes when the match starts', {duration: Toast.durations.SHORT})
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: title,
+        body: body,
+        data: {
+          data: "goes here"
+        },
+      },
+      trigger: {
+        seconds: matchTime
+      },
+    })
+  }
+  
   const renderData = ({item}) => {
     return (
       <View style={styles.matchItem}>
@@ -28,6 +52,9 @@ const Matches = ({navigation}) => {
           <Text style={{color: colors.khakhi, marginTop: 5}}>{item.away_team_en}</Text>
         </View>
         <View style={styles.dateTimeContainer}>
+          <Pressable style={styles.notIcon} onPress={() => triggerNotification(item.local_date, "Match is starting soon, get ready!", `${item.away_team_en} vs ${item.home_team_en} starts at ${timeConvert(item.local_date.slice(-5))}`)}>
+            <Ionicons name="notifications" size={20} color={colors.khakhi} />
+          </Pressable>
           <Text style={styles.time}>
             <Text>------</Text>
             {timeConvert(item.local_date.slice(-5))}
@@ -89,6 +116,11 @@ const styles = StyleSheet.create({
   },
   date: {
     color: colors.khakhi,
+  },
+  notIcon: {
+    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "flex-start"
   }
 })
 

@@ -8,12 +8,37 @@ import News from "./screens/News.js"
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import {colors} from "./constants/colors.js"
 import { useFonts } from 'expo-font'
+import { RootSiblingParent } from 'react-native-root-siblings'
+import * as Notifications from "expo-notifications"
+import * as Permissions from 'expo-permissions'
+import {useEffect, useState, useRef} from "react"
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
 
 const Tab = createBottomTabNavigator()
 const navTheme = DefaultTheme
 navTheme.colors.background = colors.main
 
 const App = () => {
+  useEffect(() => {
+Permissions.getAsync(Permissions.NOTIFICATIONS).then((statusObj) => {
+if (statusObj.status !== "granted") {
+return Permissions.askAsync(Permissions.NOTIFICATIONS)
+}
+return statusObj;
+}).then((statusObj) => {
+if (statusObj.status !== "granted") {
+return;
+}
+})
+}, [])
+  
   const [fontsLoaded] = useFonts({
     'marsdenBold': require('./assets/fonts/Marsden-Ct-Bold.ttf')
   })
@@ -22,6 +47,7 @@ const App = () => {
   }
 
   return (
+    <RootSiblingParent>
     <NavigationContainer theme={navTheme}>
       <StatusBar style="light" />
       <Tab.Navigator screenOptions={({ route }) => ({
@@ -49,6 +75,7 @@ const App = () => {
         <Tab.Screen name="News" component={News} options={{title: "Headlines"}} />
       </Tab.Navigator>
     </NavigationContainer>
+    </RootSiblingParent>
   );
 }
 
