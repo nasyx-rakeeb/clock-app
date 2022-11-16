@@ -1,4 +1,4 @@
-const token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzcxMTgxNjZjYWNjMDZmNDgwODEwYTgiLCJpYXQiOjE2Njg1ODMyODIsImV4cCI6MTY2ODY2OTY4Mn0.3eG2O5kKsyWY3sLk7eSrdqkBK_i0JpxUpdxjeSiYQww"
+const token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzcxMTgxNjZjYWNjMDZmNDgwODEwYTgiLCJpYXQiOjE2Njg1ODgzODgsImV4cCI6MTY2ODY3NDc4OH0.DMS-ww650rMnzholgIQp8Hi8RApSrNy-cTv8KLkhGys"
 const URL = "http://api.cup2022.ir/api/v1/match"
 
 export async function getMatches() {
